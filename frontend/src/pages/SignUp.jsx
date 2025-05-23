@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import {  Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const SignUp = () => {
@@ -11,7 +11,7 @@ const SignUp = () => {
     reset
   } = useForm();
 
-
+const nav = useNavigate()
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("username", data.username);
@@ -33,6 +33,7 @@ const SignUp = () => {
       if (response.ok) {
         toast.success("User created successfully");
         reset();
+        nav("/signin")
         
       } else {
         toast.error("User could not be created");
@@ -54,7 +55,6 @@ const SignUp = () => {
           Create Account
         </h1>
 
-        {/* Username */}
         <div>
           <label className="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">
             Username <span className="text-red-500">*</span>

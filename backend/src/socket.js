@@ -7,7 +7,7 @@ const app = express()
 const httpServer = http.createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:5173"],
     methods: ["GET", "POST"],
   },
 });
@@ -15,14 +15,15 @@ const io = new Server(httpServer, {
 
 
 io.on("connection", (socket) => {
-    console.log("socket connected successfully",socket.id)
-})
+  console.log("socket connected successfully", socket.id);
 
+ 
+  socket.emit("newMessage", "message me fast");
 
+  socket.on("disconnect", () => {
+    console.log("socket connection disconnected", socket.id);
+  });
+});
 
-
-io.on("disconnect", (socket) => {
-    console.log("socket connection disconnected",socket.id)
-})
 
 export{app,httpServer,io}

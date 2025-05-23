@@ -4,8 +4,9 @@ import rateLimit from "express-rate-limit";
 import express from "express";
 import cors from "cors";
 import { dbConnect } from "./database/index.js";
-import dotenv from 'dotenv'
-dotenv.config()
+import userRoutes from "./routes/user.routes.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const port = 3000;
 const host = "127.0.0.1";
@@ -18,7 +19,7 @@ const limit = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req, res) => {
-    return req.user?._id || req.auth0id;
+    return req.user?._id || req.ip;
   },
   store: new MongoStore({
     uri: "mongodb://127.0.0.1:27017/messenger",
@@ -28,10 +29,10 @@ const limit = rateLimit({
 });
 
 const corsOptions = {
-  origin: "",
-  extended: true,
+  origin: "http://localhost:5173",
+  Credentials: true,
 };
-app.use(limit);
+//app.use(limit);
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors(corsOptions));
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
   res.send("this is hi from backend");
 });
 
+app.use("/auth", userRoutes);
 dbConnect()
   .then(() => {
     httpServer.listen(port, () => {

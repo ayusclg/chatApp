@@ -1,12 +1,40 @@
-import React from 'react'
-import Signin from './pages/SignUp'
+import React, { useEffect,useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import io from 'socket.io-client'
+
+import RootLayout from './layout/RootLayout.jsx';
+import HomePage from './pages/Home.jsx';
+import SignUp from './pages/SignUp.jsx';
+import SignIn from './pages/Signin.jsx';
+
+
+
 
 const App = () => {
-  return (
-    <div>
-      <Signin />
-    </div>
-  )
-}
+const [socket,setSocket] = useState("")
+  useEffect(() => {
+    const socket = io("http://127.0.0.1:3000")
+    setSocket(socket)
 
-export default App
+    socket.on("newMessage", ((data) => {
+      console.log("received Message",data)
+    }))
+
+     return () => {
+      socket.disconnect();
+    };
+  },[])
+  return (
+    <Router>
+      <RootLayout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+        </Routes>
+      </RootLayout>
+    </Router>
+  );
+};
+
+export default App;
