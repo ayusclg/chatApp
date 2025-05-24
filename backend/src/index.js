@@ -6,6 +6,7 @@ import cors from "cors";
 import { dbConnect } from "./database/index.js";
 import userRoutes from "./routes/user.routes.js";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 const port = 3000;
@@ -30,12 +31,13 @@ const limit = rateLimit({
 
 const corsOptions = {
   origin: "http://localhost:5173",
-  Credentials: true,
+  credentials: true,
 };
 //app.use(limit);
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("this is hi from backend");

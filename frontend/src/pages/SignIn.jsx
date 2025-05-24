@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const SignIn = () => {
@@ -9,8 +10,10 @@ const SignIn = () => {
     formState: { errors, isSubmitting },
     reset,
   } = useForm();
+    const nav = useNavigate()
 
-  const onSubmit = async (data) => {
+    const onSubmit = async (data) => {
+      
     try {
       const response = await fetch("http://127.0.0.1:3000/auth/login", {
         method: "POST",
@@ -19,10 +22,13 @@ const SignIn = () => {
           email: data.email,
           password: data.password,
         }),
+        credentials: 'include',
       });
 
-      if (response.ok) {
-        toast.success("Logged in successfully");
+        if (response.ok) {
+          
+          toast.success("Logged in successfully");
+          nav("/")
         reset();
         
       } else {

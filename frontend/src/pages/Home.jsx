@@ -9,8 +9,7 @@ const HomePage = () => {
           Welcome to Our Platform
         </h1>
         <p className="text-gray-700 text-base sm:text-lg mb-8 max-w-md mx-auto">
-          Discover amazing features, connect with others, and manage your profile easily.
-          Join us to start your journey today!
+         Join To Have Chat With Your Friends
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-6 space-y-4 sm:space-y-0">
           <NavLink to ="/signup"
@@ -18,11 +17,11 @@ const HomePage = () => {
           >
             Create Account
           </NavLink>
-          <p
+          <NavLink to="/signin"
             className="w-full sm:w-auto px-6 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-xl cursor-pointer select-none text-base sm:text-lg"
           >
             Sign In
-          </p>
+          </NavLink>
         </div>
       </div>
     </div>

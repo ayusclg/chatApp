@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const SignUp = () => {
@@ -71,7 +71,7 @@ const nav = useNavigate()
           )}
         </div>
 
-        {/* Full Name */}
+        
         <div>
           <label className="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">
             Full Name <span className="text-red-500">*</span>
@@ -88,7 +88,7 @@ const nav = useNavigate()
           )}
         </div>
 
-        {/* Email */}
+      
         <div>
           <label className="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">
             Email <span className="text-red-500">*</span>
@@ -111,7 +111,7 @@ const nav = useNavigate()
           )}
         </div>
 
-        {/* Address */}
+       
         <div>
           <label className="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">
             Address
@@ -124,7 +124,7 @@ const nav = useNavigate()
           />
         </div>
 
-        {/* Password */}
+        
         <div>
           <label className="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">
             Password <span className="text-red-500">*</span>
@@ -147,7 +147,7 @@ const nav = useNavigate()
           )}
         </div>
 
-        {/* Gender */}
+       
         <div>
           <label className="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">
             Gender <span className="text-red-500">*</span>
@@ -186,7 +186,7 @@ const nav = useNavigate()
           )}
         </div>
 
-        {/* Profile Picture */}
+        
         <div>
           <label className="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">
             Profile Picture
@@ -199,7 +199,7 @@ const nav = useNavigate()
           />
         </div>
 
-        {/* Submit Button */}
+        
         <button
           type="submit"
           disabled={isSubmitting}
@@ -208,12 +208,12 @@ const nav = useNavigate()
           {isSubmitting ? "Registering..." : "Register"}
         </button>
 
-        {/* Sign-in link */}
+      
         <p className="text-center text-gray-600 text-sm sm:text-base">
           Already have an account?{" "}
-          {/* <Link to="/" className="text-indigo-600 font-semibold hover:underline">
+          <NavLink to="/signin" className="text-indigo-600 font-semibold hover:underline">
             Sign In
-          </Link> */}
+          </NavLink>
         </p>
       </form>
     </div>

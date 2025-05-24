@@ -1,6 +1,7 @@
 import { User } from "../models/user.models.js";
 import bcrypt from "bcrypt";
 import uploadImage from "../utils/multer.js";
+import { AccessToken, RefreshToken } from "../utils/tokens.js";
 
 const userRegister = async (req, res) => {
   try {
@@ -19,11 +20,6 @@ const userRegister = async (req, res) => {
         message: "Username Already Exist",
       });
     }
-    // if (!gender.includes(["male", "female", "others"])) {
-    //   return res.status(403).json({
-    //     message: "Gender NotValid",
-    //   });
-    // }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const photo = req.file;
@@ -58,4 +54,54 @@ const userRegister = async (req, res) => {
   }
 };
 
-export { userRegister };
+const userLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const exist = await User.findOne({ email });
+    if (!exist) {
+      return res.status(403).json({
+        message: "User Doesnt Exist",
+      });
+    }
+    const passwordCheck = await bcrypt.compare(password, exist.password);
+    if (!passwordCheck) {
+      return res.status(404).json({
+        message: "Password Invalid",
+      });
+    }
+    const accessToken = AccessToken(exist._id);
+    const refreshToken = RefreshToken(exist._id);
+    if (!accessToken || !refreshToken) {
+      return res.status(400).json({
+        message: "Internal Error In Token Generation",
+      });
+    }
+
+    const loggedInUser = await User.findById(exist._id).select(
+      "-password -refresh_token"
+    );
+    const options = {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24,
+    };
+
+    res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json({
+        message: "User Logged IN ",
+        data: loggedInUser,
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error In User Login",
+    });
+  }
+};
+
+export { userRegister, userLogin };
